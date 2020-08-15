@@ -1,5 +1,6 @@
 import discord
 import settings
+import nasa_api
 
 
 class star_explorer(discord.Client):
@@ -48,6 +49,11 @@ class star_explorer(discord.Client):
             await self.command_help(args, message.channel)
             await message.delete()
 
+        # apod
+        if command == "apod":
+            await self.command_apod(message)
+            await message.delete()
+
     # ## Commands ## #
 
     async def command_help(self, message):
@@ -61,4 +67,8 @@ class star_explorer(discord.Client):
 
         pass
 
+    async def command_apod(self, message):
+        """Get Astronomy Picture of Day"""
+        nasa = nasa_api.NASAClient()
+        await message.channel.send(nasa.fetch_apod_img())
 star_explorer().run_bot()

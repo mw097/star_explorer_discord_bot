@@ -5,3 +5,4 @@ command_prefix = '$'
 
 # NASA API
 key_nasa = ''
+apod_quality_hd = True
