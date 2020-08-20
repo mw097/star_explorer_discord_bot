@@ -51,9 +51,17 @@ class star_explorer(discord.Client):
 
         # apod
         if command == "apod":
-            await self.command_apod(message)
+            await self.command_apod(message, args)
             await message.delete()
 
+        if command == "neofeedcount":
+            await self.command_neofeed_count(message, args)
+            await message.delete()
+
+        if command == "neofeedlist":
+            await self.command_neofeed_list(message, args)
+            await message.delete()
+            
     # ## Commands ## #
 
     async def command_help(self, message):
@@ -67,8 +75,23 @@ class star_explorer(discord.Client):
 
         pass
 
-    async def command_apod(self, message):
+    async def command_apod(self, message, imgDate):
         """Get Astronomy Picture of Day"""
         nasa = nasa_api.NASAClient()
-        await message.channel.send(nasa.fetch_apod_img())
+        await message.channel.send(nasa.fetch_apod_img(imgDate))
+
+    async def command_neofeed_count(self, message, dates):
+        """Get a count of asteroids based on their closes approach date to Earth"""
+        nasa = nasa_api.NASAClient()
+        await message.channel.send(nasa.fetch_neows_feed_count(dates))
+
+    async def command_neofeed_list(self, message, dates):
+        """Get a list of asteroids based on their closes approach date to Earth"""
+        nasa = nasa_api.NASAClient()
+        msg = ''
+        for st in nasa.fetch_neows_feed_list(dates):
+            msg += st + " "
+
+        await message.channel.send(msg)
+
 star_explorer().run_bot()
