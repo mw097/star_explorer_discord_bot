@@ -92,6 +92,15 @@ class star_explorer(discord.Client):
         for st in nasa.fetch_neows_feed_list(dates):
             msg += st + " "
 
-        await message.channel.send(msg)
+        try:
+            await message.channel.send(msg)
+        except discord.errors.HTTPException:
+            msgLen = len(msg)
+            b, e = 0, 1999
+            while msgLen > 0:
+                await message.channel.send(msg[b:e])
+                msgLen -= 2000
+                b += 1999
+                e += 1999
 
 star_explorer().run_bot()

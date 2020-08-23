@@ -47,6 +47,7 @@ class NASAClient:
         asteroids = []
 
         for day in response['near_earth_objects'].values():
-            asteroids.append('ID: ' + day[1]['id'] + ', URL: ' + day[1]['nasa_jpl_url'])
+            for asteroid in day:
+                asteroids.append('ID: ' + asteroid['id']  + ', URL: ' + asteroid['nasa_jpl_url'])
 
         return asteroids
